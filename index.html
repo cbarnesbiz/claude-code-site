@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Code for Product Managers</title>
+  <style>
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: #1a1a2e;
+      line-height: 1.6;
+      background: #fafafa;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid #e8e8ec;
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+
+    nav .logo {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #d97706;
+      letter-spacing: -0.02em;
+    }
+
+    nav a {
+      color: #555;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-left: 2rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: #d97706;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem 4rem;
+      background: linear-gradient(160deg, #fff8f0 0%, #ffffff 40%, #f0f4ff 100%);
+    }
+
+    .hero-content {
+      max-width: 720px;
+    }
+
+    .hero .badge {
+      display: inline-block;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      color: #c2410c;
+      font-size: 0.8rem;
+      font-weight: 600;
+      padding: 0.35rem 1rem;
+      border-radius: 50px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 {
+      font-size: 3.2rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      color: #0f172a;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #475569;
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(217, 119, 6, 0.25);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(217, 119, 6, 0.35);
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      background: #fff;
+      color: #374151;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.85rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      border: 1px solid #d1d5db;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      border-color: #9ca3af;
+    }
+
+    /* Section shared styles */
+    section {
+      padding: 5rem 2rem;
+    }
+
+    .section-inner {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #d97706;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #0f172a;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: #64748b;
+      max-width: 600px;
+      margin-bottom: 3rem;
+    }
+
+    /* What It Does */
+    .what-it-does {
+      background: #ffffff;
+      border-top: 1px solid #f1f1f4;
+      border-bottom: 1px solid #f1f1f4;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: #fafafa;
+      border: 1px solid #e8e8ec;
+      border-radius: 12px;
+      padding: 2rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: #d97706;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      background: #fff7ed;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .feature-card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-card p {
+      font-size: 0.95rem;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    /* Why It Matters */
+    .why-it-matters {
+      background: #fafafa;
+    }
+
+    .benefits-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .benefit {
+      display: flex;
+      gap: 1.25rem;
+      align-items: flex-start;
+    }
+
+    .benefit-number {
+      flex-shrink: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d97706, #ea580c);
+      color: #fff;
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .benefit h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 0.3rem;
+    }
+
+    .benefit p {
+      font-size: 0.95rem;
+      color: #64748b;
+    }
+
+    /* CTA */
+    .cta-section {
+      background: linear-gradient(160deg, #1e293b 0%, #0f172a 100%);
+      text-align: center;
+    }
+
+    .cta-section .section-label {
+      color: #fbbf24;
+    }
+
+    .cta-section .section-title {
+      color: #f1f5f9;
+    }
+
+    .cta-section .section-subtitle {
+      color: #94a3b8;
+      margin-left: auto;
+      margin-right: auto;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-section .btn-primary {
+      padding: 1rem 2.5rem;
+      font-size: 1.05rem;
+    }
+
+    /* Footer */
+    footer {
+      background: #0f172a;
+      border-top: 1px solid #1e293b;
+      padding: 2rem;
+      text-align: center;
+      color: #64748b;
+      font-size: 0.85rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero p {
+        font-size: 1.05rem;
+      }
+
+      .benefits-list {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="logo">Claude Code</div>
+    <div>
+      <a href="#what">Features</a>
+      <a href="#why">Benefits</a>
+      <a href="#start">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-content">
+      <div class="badge">Built by Anthropic</div>
+      <h1>Ship products faster with <span>Claude Code</span></h1>
+      <p>An agentic coding tool that lives in your terminal. Claude Code understands your codebase, writes real code, and helps your engineering team move at the speed of thought.</p>
+      <div class="cta-group">
+        <a href="https://docs.anthropic.com/en/docs/claude-code" class="btn-primary">Read the Docs</a>
+        <a href="#what" class="btn-secondary">See What It Does</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What It Does -->
+  <section class="what-it-does" id="what">
+    <div class="section-inner">
+      <div class="section-label">Capabilities</div>
+      <div class="section-title">What Claude Code does</div>
+      <p class="section-subtitle">Claude Code operates directly in the terminal with full context of your project, no copy-pasting snippets into a chat window.</p>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">&#128270;</div>
+          <h3>Understands your codebase</h3>
+          <p>Reads files, navigates directories, and grasps the architecture of your project so it can make changes that actually fit.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#9997;&#65039;</div>
+          <h3>Writes and edits code</h3>
+          <p>Creates new features, fixes bugs, and refactors existing code across multiple files with precise, targeted edits.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128736;</div>
+          <h3>Runs commands</h3>
+          <p>Executes tests, lints code, manages git operations, and runs build tools directly in your development environment.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">&#128172;</div>
+          <h3>Explains and plans</h3>
+          <p>Answers questions about how code works, proposes implementation plans, and helps you think through architectural decisions.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why It Matters -->
+  <section class="why-it-matters" id="why">
+    <div class="section-inner">
+      <div class="section-label">For Product Managers</div>
+      <div class="section-title">Why this matters for your team</div>
+      <p class="section-subtitle">Claude Code changes the equation on what's possible in a sprint.</p>
+      <div class="benefits-list">
+        <div class="benefit">
+          <div class="benefit-number">1</div>
+          <div>
+            <h3>Faster iteration cycles</h3>
+            <p>Engineers spend less time on boilerplate and routine tasks. Features that used to take days of implementation effort move faster, letting you validate ideas sooner.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-number">2</div>
+          <div>
+            <h3>Lower cost of prototyping</h3>
+            <p>Exploring a "what if we built this?" idea becomes cheaper. Your team can spike on concepts and throw away the code without feeling the burn.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-number">3</div>
+          <div>
+            <h3>Unblock yourself</h3>
+            <p>Need to understand a technical constraint? Fix a typo in production copy? Claude Code lets PMs interact directly with the codebase for small tasks without pulling an engineer off their work.</p>
+          </div>
+        </div>
+        <div class="benefit">
+          <div class="benefit-number">4</div>
+          <div>
+            <h3>Better technical conversations</h3>
+            <p>Use Claude Code to explore how features are currently built before a planning meeting. Walk into discussions with real context, not assumptions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section" id="start">
+    <div class="section-inner">
+      <div class="section-label">Get Started</div>
+      <div class="section-title">Ready to try it?</div>
+      <p class="section-subtitle">Install Claude Code with a single command and start using it in any project. No configuration required.</p>
+      <a href="https://docs.anthropic.com/en/docs/claude-code" class="btn-primary">Get Claude Code</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>Claude Code is made by Anthropic. This page is for informational purposes.</p>
+  </footer>
+
+</body>
+</html>
